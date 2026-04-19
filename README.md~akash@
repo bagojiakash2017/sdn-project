@@ -1,0 +1,45 @@
+# Broadcast Traffic Control using SDN (Mininet & POX)
+
+## Objective
+The objective of this project is to control broadcast traffic using Software Defined Networking (SDN).
+
+## Tools Used
+- Mininet
+- POX Controller
+- Open vSwitch
+- Ubuntu
+
+## Topology
+Single switch topology with 3 hosts (h1, h2, h3)
+
+## Steps to Execute
+
+1. Start POX Controller:
+   cd ~/pox
+   python3 pox.py forwarding.l2_learning
+
+2. Start Mininet:
+   sudo mn --topo single,3 --mac --controller remote
+
+3. Test connectivity:
+   pingall
+
+4. Apply broadcast blocking:
+   sudo ovs-ofctl add-flow s1 "dl_dst=ff:ff:ff:ff:ff:ff,actions=drop"
+
+5. Verify flow rule:
+   sudo ovs-ofctl dump-flows s1
+
+6. Test again:
+   pingall
+
+7. Measure throughput:
+   h1 iperf -s &
+   h2 iperf -c h1
+
+## Result
+Broadcast traffic was successfully blocked, causing ARP failure and communication loss.
+
+## Conclusion
+SDN allows dynamic control of network traffic using flow rules.
+
